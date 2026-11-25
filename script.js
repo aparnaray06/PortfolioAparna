@@ -124,7 +124,7 @@ try {
     try {
         var root = document.documentElement;
         var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        var EMAIL = 'ray434575@gmail.com';
+        var EMAIL = 'apurnaray25@navgurukul.org';
         function $(s, c) { return (c || document).querySelector(s); }
         function $$(s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); }
         function el(t, c, x) { var e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; }
@@ -176,40 +176,82 @@ try {
 
         /* request flow */
         var FLOW = {
+            collabsphere: {
+                nodes: [
+                    ['React frontend', 'Projects · Tasks · Notes · Files'],
+                    ['Express.js server', 'JWT · Protected REST APIs'],
+                    ['MongoDB + Gemini', 'Data storage · AI documentation']
+                ],
+                steps: [
+                    { t: 'Sign in', 
+                        d: 'Users sign in and access their authorized workspace.', 
+                        n: [0], 
+                        c: [] },
+                    { 
+                        t: 'Request', 
+                        d: 'The React app sends authenticated requests to the Express.js server.', 
+                        n: [0, 1], 
+                        c: [0], 
+                        dir: 1 },
+                    { 
+                        t: 'Process', 
+                        d: 'The server checks access permissions and manages project data.', 
+                        n: [1, 2], 
+                        c: [1], 
+                        dir: 1 },
+                    {
+                        t: 'AI assistance',
+                        d: 'Gemini helps generate documentation, README content, and code explanations.',
+                        n: [2, 1, 0],
+                        c: [1, 0],
+                        dir: -1
+                    }
+                ]
+            },
+
             gemini: {
-                nodes: [['Browser', 'HTML · CSS · JavaScript'], ['Express.js server', 'Node.js · dotenv'], ['Google Gemini API', 'AI-generated responses']],
+                nodes: [
+                    ['Browser', 'HTML · CSS · JavaScript'],
+                    ['Express.js server', 'Node.js · dotenv'],
+                    ['Google Gemini API', 'AI-generated responses']
+                ],
                 steps: [
                     { t: 'Ask', d: 'You submit a question in the browser.', n: [0], c: [] },
                     { t: 'Request', d: 'The browser sends the question to my Express.js server.', n: [0, 1], c: [0], dir: 1 },
                     { t: 'AI call', d: 'The server passes it to the Google Gemini API.', n: [1, 2], c: [1], dir: 1 },
-                    { t: 'Response', d: 'The AI-generated answer travels back and appears on the page.', n: [2, 1, 0], c: [1, 0], dir: -1 }]
+                    { t: 'Response', d: 'The AI-generated answer travels back and appears on the page.', n: [2, 1, 0], c: [1, 0], dir: -1 }
+                ]
             },
-            journal: {
-                nodes: [['Browser', 'HTML · CSS · JavaScript'], ['Express.js server', 'Node.js · dotenv'], ['Google Gemini API', 'AI-generated suggestions']],
+
+            printqueue: {
+                nodes: [
+                    ['React frontend', 'Print orders · Student records'],
+                    ['Express.js server', 'Order management · Pricing'],
+                    ['MongoDB', 'Orders · Records · Pickup tracking']
+                ],
                 steps: [
-                    { t: 'Mood', d: 'You tell the app how you feel in the browser.', n: [0], c: [] },
-                    { t: 'Request', d: 'The browser sends your mood to my Express.js server.', n: [0, 1], c: [0], dir: 1 },
-                    { t: 'AI call', d: 'The server asks the Google Gemini API for a journaling prompt.', n: [1, 2], c: [1], dir: 1 },
-                    { t: 'Prompt', d: 'The journaling prompt travels back and appears on the page.', n: [2, 1, 0], c: [1, 0], dir: -1 }]
+                    { t: 'Create order', d: 'A student or user submits a print request through the application.', n: [0], c: [] },
+                    { t: 'Process request', d: 'The Express.js server handles the order and its pricing details.', n: [0, 1], c: [0], dir: 1 },
+                    { t: 'Store data', d: 'MongoDB stores the order and related student records.', n: [1, 2], c: [1], dir: 1 },
+                    { t: 'Track pickup', d: 'The application updates the order status so the print shop can manage pickup.', n: [2, 1, 0], c: [1, 0], dir: -1 }
+                ]
             },
-            shopsy: {
-                nodes: [['Browser UI', 'HTML · CSS · JavaScript'], ['React app', 'React.js · Vite'], ['DummyJSON API', 'Product data']],
-                steps: [
-                    { t: 'Load', d: 'You open the shop and the React app starts in your browser.', n: [0, 1], c: [0], dir: 1 },
-                    { t: 'Fetch', d: 'The app requests products from the DummyJSON API.', n: [1, 2], c: [1], dir: 1 },
-                    { t: 'Display', d: 'The products come back and are displayed on the page.', n: [2, 1, 0], c: [1, 0], dir: -1 },
-                    { t: 'Cart', d: 'useReducer manages the cart state and React Hook Form validates the checkout form.', n: [1], c: [] }]
-            },
+
             feedback: {
-                nodes: [['Client', 'Sends REST requests'], ['Express.js server', 'Node.js · Mongoose'], ['MongoDB', 'Persistent storage']],
+                nodes: [
+                    ['Client', 'Sends REST requests'],
+                    ['Express.js server', 'Node.js · Mongoose'],
+                    ['MongoDB', 'Persistent storage']
+                ],
                 steps: [
                     { t: 'Request', d: 'A request to create, read, update or delete feedback reaches my REST API endpoints.', n: [0, 1], c: [0], dir: 1 },
                     { t: 'Validate', d: 'The Mongoose data model checks the feedback data before it is saved.', n: [1], c: [] },
                     { t: 'Store', d: 'MongoDB stores or updates the feedback records.', n: [1, 2], c: [1], dir: 1 },
-                    { t: 'Response', d: 'The result travels back to the client as the API response.', n: [2, 1, 0], c: [1, 0], dir: -1 }]
+                    { t: 'Response', d: 'The result travels back to the client as the API response.', n: [2, 1, 0], c: [1, 0], dir: -1 }
+                ]
             }
         };
-        var fkey = 'gemini', fi = 0, fuser = false, fvis = false, ftimer = null;
+        var fkey = 'collabsphere', fi = 0, fuser = false, fvis = false, ftimer = null;
         var fWrap = $('#fnodes'), fSteps = $('#fsteps'), fCap = $('#fcap');
         function setStep(i) {
             fi = i; var s = FLOW[fkey].steps[i];
@@ -282,8 +324,8 @@ try {
         C.resume = function () {
             L([{ c: 'ps', t: 'Full-Stack Developer | AI-Integration' }]);
             L([{ c: 'k', t: 'languages' }, 'English, Hindi']);
-            L([{ c: 'k', t: 'certified' }, 'CodeChef Certification, IT Certifications, MongoDB Certifications']);
-            L([{ c: 'k', t: 'pdf' }, { href: 'https://drive.google.com/file/d/1piVjzEJk8FgkHsmeIv-L6_Sirxlpy4mT/view?usp=sharing', t: 'Open the full resume' }]);
+            L([{ c: 'k', t: 'certified' }, 'CodeChef Certification, MongoDB Certifications']);
+            L([{ c: 'k', t: 'pdf' }, { href: 'https://docs.google.com/document/d/1ksDZ7VOv8vPLsSigHiAziPaVikjbpeXfyenwDyYbjUA/edit?usp=sharing', t: 'Open the full resume' }]);
         };
         C.contact = function () {
             L([{ c: 'k', t: 'email' }, EMAIL]);
@@ -447,20 +489,32 @@ try {
         $('#kbd').textContent = mac ? '⌘ K' : 'Ctrl K';
         function ext(g, t, h) { return { g: g, t: t, h: h, x: 1 }; }
         var ITEMS = [
-            { g: 'Go to', t: 'About', h: '#about' }, { g: 'Go to', t: 'Projects', h: '#projects' }, { g: 'Go to', t: 'How my apps work', h: '#flow' },
-            { g: 'Go to', t: 'Skills', h: '#skills' }, { g: 'Go to', t: 'Terminal', h: '#terminal' }, { g: 'Go to', t: 'Education', h: '#education' }, { g: 'Go to', t: 'Resume', h: '#resume' }, { g: 'Go to', t: 'Contact', h: '#contact' },
-            ext('Projects', 'Smart Shopping: live demo', 'https://assesment-black-iota.vercel.app/'),
-            ext('Projects', 'Smart Shopping: GitHub', 'https://github.com/aparnaray06/Assesment'),
+            { g: 'Go to', t: 'About', h: '#about' },
+            { g: 'Go to', t: 'Projects', h: '#projects' },
+            { g: 'Go to', t: 'How my apps work', h: '#flow' },
+            { g: 'Go to', t: 'Skills', h: '#skills' },
+            { g: 'Go to', t: 'Terminal', h: '#terminal' },
+            { g: 'Go to', t: 'Education', h: '#education' },
+            { g: 'Go to', t: 'Resume', h: '#resume' },
+            { g: 'Go to', t: 'Contact', h: '#contact' },
+
+            ext('Projects', 'CollabSphere: GitHub', 'https://github.com/aparnaray06/collabsphere'),
+            ext('Projects', 'CollabSphere: Live demo', 'https://collabsphere-kfxd.onrender.com'),
+
+            ext('Projects', 'PrintQueue: GitHub', 'https://github.com/aparnaray06/PrintQueue'),
+            ext('Projects', 'PrintQueue: live demo', 'https://printqueue-2.onrender.com'),
+
             ext('Projects', 'Ask Gemini: live demo', 'https://ask-gemini-phase5-i412.onrender.com/'),
             ext('Projects', 'Ask Gemini: GitHub', 'https://github.com/aparnaray06/Ask-Gemini-Phase5-'),
-            ext('Projects', 'AI Daily Journal Prompt Generator: live demo', 'https://journal-promt-generator.onrender.com/'),
-            ext('Projects', 'AI Daily Journal Prompt Generator: GitHub', 'https://github.com/aparnaray06/Promt-Generator'),
+
             ext('Projects', 'Feedback Management System: live demo', 'https://phase6-feedback-form.onrender.com/'),
             ext('Projects', 'Feedback Management System: GitHub', 'https://github.com/aparnaray06/phase6-feedback-form'),
+
             ext('Links', 'GitHub profile', 'https://github.com/aparnaray06'),
             ext('Links', 'LinkedIn', 'https://www.linkedin.com/in/apurna-ray-747257377/'),
             ext('Links', 'View resume', 'https://drive.google.com/file/d/1piVjzEJk8FgkHsmeIv-L6_Sirxlpy4mT/view?usp=sharing'),
             ext('Links', 'Download resume', 'Apurna_Ray_Resume.pdf'),
+
             { g: 'Actions', t: 'Copy email address', a: copyEmail },
             { g: 'Actions', t: 'Switch light / dark theme', a: toggleTheme },
             { g: 'Actions', t: 'Scroll to top', a: function () { window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' }); } }
@@ -555,13 +609,35 @@ try {
                 if (e < L * L) { cx.strokeStyle = 'rgba(' + col + ',' + (.22 * (1 - Math.sqrt(e) / L)).toFixed(3) + ')'; cx.lineWidth = 1; cx.beginPath(); cx.moveTo(a.x, a.y); cx.lineTo(b.x, b.y); cx.stroke(); }
             }
             var mdx = a.x - mx, mdy = a.y - my, md = Math.sqrt(mdx * mdx + mdy * mdy);
-            if (md < 170) { cx.strokeStyle = 'rgba(' + col + ',' + (.5 * (1 - md / 170)).toFixed(3) + ')'; cx.lineWidth = 1.2; cx.beginPath(); cx.moveTo(a.x, a.y); cx.lineTo(mx, my); cx.stroke(); }
+
+            if (md < 170) {
+                cx.strokeStyle = 'rgba(' + col + ',' + (.5 * (1 - md / 170)).toFixed(3) + ')'; cx.lineWidth = 1.2; cx.beginPath(); cx.moveTo(a.x, a.y); cx.lineTo(mx, my); cx.stroke();
+
+            }
         }
         if (!reduce) raf = requestAnimationFrame(draw);
     }
-    window.addEventListener('pointermove', function (e) { mx = e.clientX; my = e.clientY; }, { passive: true });
+
+    window.addEventListener('pointermove', function (e) {
+        mx = e.clientX; my = e.clientY;
+    }, {
+        passive: true
+
+    });
+
     window.addEventListener('pointerleave', function () { mx = my = -9999; });
-    var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { size(); if (reduce) draw(); }, 200); });
-    document.addEventListener('visibilitychange', function () { cancelAnimationFrame(raf); if (!document.hidden && !reduce) raf = requestAnimationFrame(draw); });
+
+    var rt; window.addEventListener('resize', function () {
+        clearTimeout(rt); rt = setTimeout(function () {
+            size();
+            if (reduce) draw();
+        }, 200);
+    });
+
+    document.addEventListener('visibilitychange', function () {
+        cancelAnimationFrame(raf);
+        if (!document.hidden && !reduce) raf = requestAnimationFrame(draw);
+    });
+
     readColor(); size(); draw();
 })();
